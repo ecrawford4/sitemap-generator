@@ -40,8 +40,10 @@ html_content = f"""
 </head>
 <body>
     <pre>
-    <a href="https://github.com/{user}/{repo}">https://github.com/{user}/{repo}</a>
-    {"\n".join(html_output)}
+<a class="top" href="https://github.com/{user}/{repo}">https://github.com/{user}/{repo}</a>
+{"\n".join(html_output)}
+
+sitemap generated using <a class="src" href="https://github.com/ecrawford4/sitemap-generator">sitemap-generator</a>
     </pre>
 </body>
 </html>
