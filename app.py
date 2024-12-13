@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime
 
 def get_repo_structure(user, repo, path=""):
     url = f"https://api.github.com/repos/{user}/{repo}/contents/{path}"
@@ -12,7 +13,7 @@ def generate_html_sitemap(contents, prefix="", base_url="https://github.com/", o
     for i, item in enumerate(contents):
         char = "└── " if i == len(contents) - 1 else "├── "
         link = f"{base_url}{user}/{repo}/tree/main/{item['path']}" if item['type'] == 'dir' else f"{base_url}{user}/{repo}/blob/main/{item['path']}"
-        html_link = f'<a href="{link}" class="{"file" if item["type"] == "file" else "dir"}">{item["name"]}</a>'
+        html_link = f'<a href="{link}" class="{"file" if item["type"] == "file" else "dir"}" target="_blank">{item["name"]}</a>'
         output.append(f"{prefix}{char}{html_link}")
         if item['type'] == 'dir':
             new_prefix = prefix + ("    " if i == len(contents) - 1 else "│   ")
@@ -29,6 +30,8 @@ contents = get_repo_structure(user, repo)
 
 # Generate the HTML content
 html_output = generate_html_sitemap(contents)
+current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
 html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -43,7 +46,7 @@ html_content = f"""
 <a class="top" href="https://github.com/{user}/{repo}">https://github.com/{user}/{repo}</a>
 {"\n".join(html_output)}
 
-sitemap generated using <a class="src" href="https://github.com/ecrawford4/sitemap-generator">sitemap-generator</a>
+sitemap generated using <a class="src" href="https://github.com/ecrawford4/sitemap-generator">sitemap-generator</a> at: {current_time} UTC
     </pre>
 </body>
 </html>
